@@ -1,20 +1,20 @@
-package sk.itsovy.dolinsky.stack;
+package sk.itsovy.dolinsky.queue;
 
-import sk.itsovy.dolinsky.exception.StackOverFlowException;
-import sk.itsovy.dolinsky.exception.StackUnderFlowException;
+import sk.itsovy.dolinsky.exception.QueueOverFlowException;
+import sk.itsovy.dolinsky.exception.QueueUnderFlowException;
 
 import java.util.ArrayList;
 
 /**
  * @author Martin Dolinsky
  */
-public class Stack<T> {
+public class Queue<T> {
 	private int size;
 	private int capacity;
 	private ArrayList<T> list;
 
-	public Stack(int capacity) {
-		if (capacity < 1) {
+	public Queue(int capacity) {
+		if (this.capacity < 1) {
 			this.capacity = 5;
 		}
 		this.capacity = capacity;
@@ -37,33 +37,32 @@ public class Stack<T> {
 		return size == capacity;
 	}
 
-	public void push(T object) throws StackOverFlowException {
+	public void enqueue(T object) throws QueueOverFlowException {
 		if (object == null) return;
 		if (!isFull()) {
 			list.add(object);
 			size++;
-		}
-		else throw new StackOverFlowException("Stack is full!");
+		} else throw new QueueOverFlowException("Queue is full!");
 	}
 
-	public void pop() throws StackUnderFlowException {
-		if (isEmpty()) throw new StackUnderFlowException("Stack is empty!");
+	public void dequeue() throws QueueUnderFlowException {
+		if (isEmpty()) throw new QueueUnderFlowException("Queue is empty!");
 		else {
-			list.remove(size - 1);
 			size--;
+			list.remove(0);
 		}
 	}
 
-	public T top() {
+	public T front() {
 		if (isEmpty()) return null;
 		else {
-			return list.get(size-1);
+			return list.get(0);
 		}
 	}
 
-	public T topAndPop() throws StackUnderFlowException {
-		T temp = top();
-		pop();
+	public T frontAndDeque() throws QueueUnderFlowException {
+		T temp = front();
+		dequeue();
 		return temp;
 	}
 
@@ -72,10 +71,11 @@ public class Stack<T> {
 		size = 0;
 	}
 
-	public void printStack() {
+	public void printQueue() {
 		for (T t : list) {
 			System.out.print(t + ", ");
 		}
 		System.out.println();
 	}
+
 }
